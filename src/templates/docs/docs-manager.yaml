@@ -1,0 +1,16 @@
+root: docs
+specFile: spec.md
+guideFile: guide.md
+dataModelsFile: data-models.md
+uiFile: ui.md
+changelogFile: changelog.md
+changesDir: changes
+archiveDir: archive
+changeFilenamePattern: "{date}-{slug}-plan.md"
+defaultStatus: pending
+allowedStatuses:
+  - pending
+  - in_progress
+  - blocked
+  - completed
+  - archived
