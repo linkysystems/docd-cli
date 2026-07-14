@@ -64,16 +64,16 @@ export async function run(argv: string[]): Promise<void> {
 
 function printHelp(): void {
   console.log(`
-${pc.bold("dfd")} — install and update the Docs-First Development (DFD) pattern
+${pc.bold("docd")} — install and update the Docs-First Development (DFD) pattern
 
 Usage:
-  dfd init --ide kilo
-  dfd init --ide kilo,cursor
-  dfd status
-  dfd update
-  dfd update --dry-run
-  dfd update --yes
-  dfd update --force
+  docd init --ide kilo
+  docd init --ide kilo,cursor
+  docd status
+  docd update
+  docd update --dry-run
+  docd update --yes
+  docd update --force
 
 Options:
   --ide         Comma-separated IDE providers (default: kilo)

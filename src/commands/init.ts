@@ -30,7 +30,7 @@ export async function runInit(options: InitOptions): Promise<void> {
 
   const configPath = resolve(cwd, ".dfd.json");
   if (existsSync(configPath)) {
-    console.log(pc.yellow(`.dfd.json already exists. Run "dfd update" to refresh templates.`));
+    console.log(pc.yellow(`.dfd.json already exists. Run "docd update" to refresh templates.`));
     return;
   }
 

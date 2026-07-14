@@ -1,10 +1,11 @@
 {
-  "name": "@linkysystems/dfd",
+  "name": "@linkysystems/docd",
   "version": "1.0.0",
   "description": "CLI to install and update the Docs-First Development (DFD) pattern in any project.",
+  "license": "MIT",
   "type": "module",
   "bin": {
-    "dfd": "dist/index.js"
+    "docd": "dist/index.js"
   },
   "scripts": {
     "build": "tsc && rm -rf dist/templates && cp -r src/templates dist/templates",

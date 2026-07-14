@@ -23,7 +23,7 @@ export async function runUpdate(options: UpdateOptions): Promise<void> {
   const cwd = options.cwd;
   const config = await readConfig(cwd);
   if (!config) {
-    console.log(pc.red("No .dfd.json found. Run \"dfd init\" first."));
+    console.log(pc.red("No .dfd.json found. Run \"docd init\" first."));
     return;
   }
 
