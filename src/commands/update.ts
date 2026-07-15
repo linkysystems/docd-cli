@@ -23,7 +23,7 @@ export async function runUpdate(options: UpdateOptions): Promise<void> {
   const cwd = options.cwd;
   const config = await readConfig(cwd);
   if (!config) {
-    console.log(pc.red("No .dfd.json found. Run \"docd init\" first."));
+    console.log(pc.red("No .docd.json found. Run \"docd init\" first."));
     return;
   }
 
@@ -144,7 +144,7 @@ export async function runUpdate(options: UpdateOptions): Promise<void> {
   if (!options.dryRun && updatedCount > 0) {
     config.version = bundleVersion;
     await writeConfig(cwd, config);
-    console.log(pc.green(`\nUpdated .dfd.json version to ${bundleVersion}.`));
+    console.log(pc.green(`\nUpdated .docd.json version to ${bundleVersion}.`));
   }
 
   console.log();

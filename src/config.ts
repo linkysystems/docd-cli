@@ -11,7 +11,7 @@ export interface DDDConfig {
   version: string;
 }
 
-const CONFIG_FILE = ".dfd.json";
+const CONFIG_FILE = ".docd.json";
 
 export function getConfigPath(cwd: string): string {
   return resolve(cwd, CONFIG_FILE);

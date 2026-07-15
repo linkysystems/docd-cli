@@ -28,14 +28,14 @@ export async function runInit(options: InitOptions): Promise<void> {
     config.config[provider.configKey] = provider.configDir;
   }
 
-  const configPath = resolve(cwd, ".dfd.json");
+  const configPath = resolve(cwd, ".docd.json");
   if (existsSync(configPath)) {
-    console.log(pc.yellow(`.dfd.json already exists. Run "docd update" to refresh templates.`));
+    console.log(pc.yellow(`.docd.json already exists. Run "docd update" to refresh templates.`));
     return;
   }
 
   await writeConfig(cwd, config);
-  console.log(pc.green(`Created .dfd.json (bundle ${bundleVersion})`));
+  console.log(pc.green(`Created .docd.json (bundle ${bundleVersion})`));
 
   await mkdir(resolve(cwd, config.config.docsDir), { recursive: true });
   console.log(pc.green(`Created ${config.config.docsDir}/`));

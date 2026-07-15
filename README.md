@@ -39,7 +39,7 @@ px docd update --force
 
 ## What it installs
 
-- `.dfd.json` — local configuration and bundle version.
+- `.docd.json` — local configuration and bundle version.
 - `docs/` — empty directory for feature documentation.
 - Provider-specific files (for `kilo`):
   - `.kilo/agent/docs-manager.md`
