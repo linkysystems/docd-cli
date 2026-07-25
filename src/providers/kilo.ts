@@ -14,7 +14,7 @@ export class KiloProvider implements Provider {
       configDir: base,
       agentDir: `${base}/agent`,
       skillDir: `${base}/skills`,
-      backupDir: `${base}/.dfd-backups`,
+      backupDir: `${base}/.docd-backups`,
     };
   }
 

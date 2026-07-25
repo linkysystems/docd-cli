@@ -70,7 +70,7 @@ export async function run(argv: string[]): Promise<void> {
 
 function printHelp(): void {
   console.log(`
-${pc.bold("docd")} — install and update the Docs-First Development (DFD) pattern
+${pc.bold("docd")} — install and update DOCD (DOCs-Driven Development) in any project
 
 Usage:
   docd init --ide kilo

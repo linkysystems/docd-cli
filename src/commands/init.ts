@@ -70,7 +70,7 @@ export async function runInit(options: InitOptions): Promise<void> {
     }
   }
 
-  console.log(pc.green("\nDocs-First Development (DFD) initialized."));
+  console.log(pc.green("\nDOCD (DOCs-Driven Development) initialized."));
 }
 
 function applyTransform(provider: Provider, content: string): string {
