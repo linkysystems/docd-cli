@@ -46,7 +46,7 @@ When creating a new feature or subfeature, generate the following files with con
 
 - `docs/<feature-id>/<guideFile>` (e.g., `guide.md`): description, how to use, goals, links.
 - `docs/<feature-id>/<specFile>` (e.g., `spec.md`): technical vision, architecture, API contracts, flows, design decisions.
-- `docs/<feature-id>/<dataModelsFile>` (e.g., `data-models.md`): data structures and models.
+- `docs/<feature-id>/<dataModelsFile>` (e.g., `data-models.md`): model index with file paths, relationships, and business invariants (never field-level copies of code).
 - `docs/<feature-id>/<uiFile>` (e.g., `ui.md`): visual details, colors, formats, typography, and URL to an external design system (e.g., Figma).
 - `docs/<feature-id>/<changelogFile>` (e.g., `changelog.md`): empty table with columns Date, Change, Description, Responsible.
 - `docs/<feature-id>/<changesDir>/` directory.

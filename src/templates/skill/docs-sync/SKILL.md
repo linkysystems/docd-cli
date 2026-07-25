@@ -51,7 +51,7 @@ After implementation, finalize the change plan, update the feature/subfeature `c
    - Compare the implemented changes with the current `guide.md`, `spec.md`, `data-models.md`, and `ui.md`.
    - Update the feature docs to reflect what was actually shipped:
      - Add or update sections in `spec.md` for new API contracts, flows, or architectural decisions.
-     - Add or update data models in `data-models.md`.
+     - Update `data-models.md` only when the model map (entities/paths), relationships, or business invariants changed — never copy field definitions from code.
      - Add or update UI notes, screenshots, or links to external design systems (e.g., Figma) in `ui.md`.
      - Update `guide.md` usage instructions, goals, or affected areas if they changed.
    - Update `updated_at` in `guide.md` frontmatter.

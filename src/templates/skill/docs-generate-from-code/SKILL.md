@@ -46,7 +46,7 @@ If the input is ambiguous, ask the user to confirm the target feature name and d
 
    - `docs/<feature-slug>/<guideFile>`: description, how to use, goals, affected areas, tags, and links.
    - `docs/<feature-slug>/<specFile>`: architecture, API contracts, routes/endpoints, flows, and design decisions inferred from the code.
-   - `docs/<feature-slug>/<dataModelsFile>`: data structures, models, fields, and validation rules found in the code.
+   - `docs/<feature-slug>/<dataModelsFile>`: an index of the models found (purpose + file paths), their relationships, and business invariants not visible in code. Do not copy field definitions, types, or validation rules — reference the code paths instead.
    - `docs/<feature-slug>/<uiFile>`: visual details, colors, formats, typography, and placeholders for design URLs.
    - `docs/<feature-slug>/<changelogFile>`: empty table with Date, Change, Description, Responsible columns.
    - `docs/<feature-slug>/<changesDir>/`: empty directory for future change plans.

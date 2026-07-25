@@ -58,7 +58,7 @@ Every feature and subfeature directory shares the same file set. Subfeatures are
 <feature-slug>/
   guide.md           # Feature overview
   spec.md            # Technical specification
-  data-models.md     # Data structures and models
+  data-models.md     # Model map, relationships, and business invariants
   ui.md              # Visual and design details
   changelog.md       # History of completed changes
   changes/           # Change plans
@@ -108,20 +108,22 @@ A feature's documentation moves through four states:
   - Design decisions and trade-offs.
 - **Example trigger for edit**: a new endpoint is added → document its request/response shape and where it fits in the architecture.
 
-### `data-models.md` — Data models
+### `data-models.md` — Model map and invariants
 
 - **Created when**: the feature is first documented.
 - **Edited when**:
-  - Entities, fields, relations, or validation rules change.
-  - New migrations or models are introduced.
+  - A model or entity is added, removed, or moved to a different location.
+  - Relationships between entities change.
+  - A business invariant or rule tied to the data changes.
   - `/docs-sync` finishes a change that touches data structures.
 - **Must contain**:
-  - Primary entities and their purpose.
-  - Field definitions and types.
+  - Index of primary entities: purpose and file paths (ORM models, schemas, DTOs).
   - Relationships between entities.
-  - Validation rules and constraints.
-  - Storage details (database, cache, etc.) when relevant.
-- **Example trigger for edit**: a new column is added to a table → update the entity definition and validation rules.
+  - Business invariants and rules not visible in code (e.g., "an order cannot have more than one approved payment").
+  - Stable contracts (public API payloads, database schema), summarized only when other features depend on them.
+- **Must NOT contain**:
+  - Field-by-field definitions, types, or validation rules. Those live in code (ORM schemas, validators, TypeScript types), which is the single source of truth — duplicating them here guarantees drift.
+- **Example trigger for edit**: a new entity is introduced → add it to the index with its path and relationships, and document only the invariants the code cannot express.
 
 ### `ui.md` — Visual and design details
 
