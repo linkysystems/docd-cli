@@ -1,6 +1,6 @@
 ---
 name: docs-generate-from-code
-version: 1.1.0
+version: 1.2.0
 description: Generate feature documentation from an existing codebase directory or feature path.
 ---
 
@@ -19,7 +19,7 @@ If the input is ambiguous, ask the user to confirm the target feature name and d
 
 1. **Load configuration**
 
-   Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, `changeFilenamePattern`, `defaultStatus`, and `allowedStatuses`.
+   Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, `changeFilenamePattern`, `defaultStatus`, and `allowedStatuses`. A `null` value for `specFile`, `guideFile`, `dataModelsFile`, or `uiFile` means the file is disabled: never create, read, update, or link to it.
 
 2. **Identify the target**
 
@@ -42,12 +42,12 @@ If the input is ambiguous, ask the user to confirm the target feature name and d
 
 5. **Generate the feature docs**
 
-   Create the following files with content derived from the code analysis:
+   Create the following files with content derived from the code analysis (skip any file disabled (`null`) in the config):
 
    - `docs/<feature-slug>/<guideFile>`: description, how to use, goals, affected areas, tags, and links.
    - `docs/<feature-slug>/<specFile>`: architecture, API contracts, routes/endpoints, flows, and design decisions inferred from the code.
-   - `docs/<feature-slug>/<dataModelsFile>`: an index of the models found (purpose + file paths), their relationships, and business invariants not visible in code. Do not copy field definitions, types, or validation rules — reference the code paths instead.
-   - `docs/<feature-slug>/<uiFile>`: visual details, colors, formats, typography, and placeholders for design URLs.
+   - `docs/<feature-slug>/<dataModelsFile>` (optional): an index of the models found (purpose + file paths), their relationships, and business invariants not visible in code. Do not copy field definitions, types, or validation rules — reference the code paths instead.
+   - `docs/<feature-slug>/<uiFile>` (optional): visual details, colors, formats, typography, and placeholders for design URLs.
    - `docs/<feature-slug>/<changelogFile>`: empty table with Date, Change, Description, Responsible columns.
    - `docs/<feature-slug>/<changesDir>/`: empty directory for future change plans.
 

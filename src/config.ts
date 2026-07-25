@@ -4,10 +4,10 @@ import { resolve } from "node:path";
 
 export interface DocsManagerConfig {
   root: string;
-  specFile: string;
-  guideFile: string;
-  dataModelsFile: string;
-  uiFile: string;
+  specFile: string | null;
+  guideFile: string | null;
+  dataModelsFile: string | null;
+  uiFile: string | null;
   changelogFile: string;
   changesDir: string;
   archiveDir: string;

@@ -47,6 +47,8 @@ px docd update --force
 ## What it installs
 
 - `.docd.json` — local configuration (including the docs layout under `config.docs`) and bundle version.
+  - `config.docs.specFile`, `guideFile`, `dataModelsFile`, and `uiFile` are optional:
+    set any of them to `null` to disable that file (e.g. projects without UI or data models).
 - `docs/` — empty directory for feature documentation.
 - Provider-specific files (for `kilo`):
   - `.kilo/agent/docs-manager.md`
