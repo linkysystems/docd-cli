@@ -28,6 +28,9 @@ npx docd init --ide kilo,cursor
 # Check installed vs available versions
 npx docd status
 
+# List open change plans in the current project
+npx docd changes
+
 # Update all DOCD files (uses the global setting recorded in .docd.json)
 npx docd update
 

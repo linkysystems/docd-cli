@@ -1,4 +1,5 @@
 import mri from "mri";
+import { runChanges } from "./commands/changes.js";
 import { runInit } from "./commands/init.js";
 import { runStatus } from "./commands/status.js";
 import { runUpdate } from "./commands/update.js";
@@ -48,6 +49,9 @@ export async function run(argv: string[]): Promise<void> {
     case "status":
       await runStatus({ cwd });
       break;
+    case "changes":
+      await runChanges({ cwd });
+      break;
     case "update":
       await runUpdate({
         cwd,
@@ -73,6 +77,7 @@ Usage:
   docd init --ide kilo,cursor
   docd init --global
   docd status
+  docd changes
   docd update
   docd update --dry-run
   docd update --yes
