@@ -44,7 +44,7 @@ Present a brief summary of what was found before proposing changes, so the user 
 
 When creating a new feature or subfeature, generate the following files with concise placeholders:
 
-- `docs/<feature-id>/<guideFile>` (e.g., `guide.md`): description, how to use, target audience, goals, links.
+- `docs/<feature-id>/<guideFile>` (e.g., `guide.md`): description, how to use, goals, links.
 - `docs/<feature-id>/<specFile>` (e.g., `spec.md`): technical vision, architecture, API contracts, flows, design decisions.
 - `docs/<feature-id>/<dataModelsFile>` (e.g., `data-models.md`): data structures and models.
 - `docs/<feature-id>/<uiFile>` (e.g., `ui.md`): visual details, colors, formats, typography, and URL to an external design system (e.g., Figma).

@@ -82,13 +82,12 @@ A feature's documentation moves through four states:
 
 - **Created when**: the feature is first documented.
 - **Edited when**:
-  - The feature scope, audience, goals, or affected areas change.
+  - The feature scope, goals, or affected areas change.
   - `/docs-sync` finishes a change that impacts the feature overview.
   - A subfeature is added or removed.
 - **Must contain**:
   - YAML frontmatter: `id`, `title`, `status`, `created_at`, `updated_at`, `owner`, `affected_areas`, `tags`.
   - Description: what the feature does and why it exists.
-  - Target audience: who uses or maintains it.
   - How to use: entry points, URLs, flows.
   - Goals: measurable objectives.
   - Links to `spec.md`, `data-models.md`, `ui.md`, `changelog.md`, and `changes/`.

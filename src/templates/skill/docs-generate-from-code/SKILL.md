@@ -44,7 +44,7 @@ If the input is ambiguous, ask the user to confirm the target feature name and d
 
    Create the following files with content derived from the code analysis:
 
-   - `docs/<feature-slug>/<guideFile>`: description, how to use, target audience, goals, affected areas, tags, and links.
+   - `docs/<feature-slug>/<guideFile>`: description, how to use, goals, affected areas, tags, and links.
    - `docs/<feature-slug>/<specFile>`: architecture, API contracts, routes/endpoints, flows, and design decisions inferred from the code.
    - `docs/<feature-slug>/<dataModelsFile>`: data structures, models, fields, and validation rules found in the code.
    - `docs/<feature-slug>/<uiFile>`: visual details, colors, formats, typography, and placeholders for design URLs.
