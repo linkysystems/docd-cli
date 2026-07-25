@@ -1,6 +1,6 @@
 ---
 name: docs-sync
-version: 1.0.0
+version: 1.1.0
 description: Finalize an implemented change plan, update the changelog, and refresh feature documentation to reflect what was implemented.
 ---
 
@@ -16,7 +16,7 @@ After implementation, finalize the change plan, update the feature/subfeature `c
 
 1. **Load configuration**
 
-   Read `.kilo/docs-manager.yaml` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, and `allowedStatuses`.
+   Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, and `allowedStatuses`.
 
 2. **Identify the target**
 

@@ -1,6 +1,6 @@
 ---
 name: docs-manager
-version: 1.0.0
+version: 1.1.0
 description: Specialized agent for managing feature documentation and change plans in the docs/ directory.
 mode: primary
 ---
@@ -10,12 +10,12 @@ mode: primary
 ## Scope
 
 You are the specialized agent for managing feature documentation and change plans in this project.
-Focus only on files under `docs/` and `.kilo/docs-manager.yaml`.
+Focus only on files under `docs/` and `.docd.json`.
 
 ## Responsibilities
 
 - Receive documentation commands: `/docs-plan`, `/docs-generate-from-code`, `/docs-implement`, `/`.
-- Read `.kilo/docs-manager.yaml` to resolve the configured docs root and the standard set of feature files: `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, and `changeFilenamePattern`.
+- Read the `config.docs` object in `.docd.json` to resolve the configured docs root and the standard set of feature files: `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, and `changeFilenamePattern`.
 - Validate feature and change slugs as `kebab-case`.
 - Prevent duplicate feature IDs and change IDs.
 - Keep `changelog.md` files up to date after create, archive, or sync operations.
@@ -27,25 +27,22 @@ Focus only on files under `docs/` and `.kilo/docs-manager.yaml`.
 
 ## Configuration
 
-Always load `.kilo/docs-manager.yaml` at the start of a task. The file contains:
+Always load the `config.docs` object from `.docd.json` at the start of a task. It contains:
 
-```yaml
-root: docs
-specFile: spec.md
-guideFile: guide.md
-dataModelsFile: data-models.md
-uiFile: ui.md
-changelogFile: changelog.md
-changesDir: changes
-archiveDir: archive
-changeFilenamePattern: "{date}-{slug}-plan.md"
-defaultStatus: pending
-allowedStatuses:
-  - pending
-  - in_progress
-  - blocked
-  - completed
-  - archived
+```json
+{
+  "root": "docs",
+  "specFile": "spec.md",
+  "guideFile": "guide.md",
+  "dataModelsFile": "data-models.md",
+  "uiFile": "ui.md",
+  "changelogFile": "changelog.md",
+  "changesDir": "changes",
+  "archiveDir": "archive",
+  "changeFilenamePattern": "{date}-{slug}-plan.md",
+  "defaultStatus": "pending",
+  "allowedStatuses": ["pending", "in_progress", "blocked", "completed", "archived"]
+}
 ```
 
 Use these values to resolve paths dynamically. Never hardcode paths that are configurable there.
@@ -231,7 +228,7 @@ Do **not** use a subfeature for:
 ## What NOT to do
 
 - Do not write production code directly; delegate implementation to `docs-implement` and specialized agents.
-- Do not modify files outside `docs/` and `.kilo/docs-manager.yaml`.
+- Do not modify files outside `docs/` and `.docd.json`.
 - Do not run tests or verifications unless requested.
 - Do not add commit logic or git commands.
 

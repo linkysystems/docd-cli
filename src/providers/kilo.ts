@@ -1,21 +1,24 @@
+import { homedir } from "node:os";
+import { resolve } from "node:path";
 import { Provider, ProviderPaths, getInstalledPath } from "./base.js";
 
 export class KiloProvider implements Provider {
   name = "kilo";
   configKey = "kiloConfigDir";
   configDir = ".kilo";
+  globalConfigDir = resolve(homedir(), ".config", "kilo");
 
-  getPaths(cwd: string): ProviderPaths {
+  getPaths(cwd: string, globalInstall = false): ProviderPaths {
+    const base = globalInstall ? this.globalConfigDir : `${cwd}/${this.configDir}`;
     return {
-      configDir: `${cwd}/${this.configDir}`,
-      agentDir: `${cwd}/${this.configDir}/agent`,
-      skillDir: `${cwd}/${this.configDir}/skills`,
-      manifestFile: `${cwd}/${this.configDir}/docs-manager.yaml`,
-      backupDir: `${cwd}/${this.configDir}/.dfd-backups`,
+      configDir: base,
+      agentDir: `${base}/agent`,
+      skillDir: `${base}/skills`,
+      backupDir: `${base}/.dfd-backups`,
     };
   }
 
-  resolveInstalledPath(templateRelativePath: string): string {
-    return getInstalledPath(this, templateRelativePath);
+  resolveInstalledPath(templateRelativePath: string, globalInstall = false): string {
+    return getInstalledPath(this, templateRelativePath, globalInstall);
   }
 }

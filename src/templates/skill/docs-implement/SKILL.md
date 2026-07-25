@@ -1,6 +1,6 @@
 ---
 name: docs-implement
-version: 1.0.0
+version: 1.1.0
 description: Implement tasks from an approved change plan using subagents or Agent Manager for parallel execution.
 ---
 
@@ -16,7 +16,7 @@ Implement the tasks defined in an approved change plan located in `docs/<feature
 
 1. **Load configuration**
 
-   Read `.kilo/docs-manager.yaml` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, and `allowedStatuses`.
+   Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, and `allowedStatuses`.
 
 2. **Read the plan**
 

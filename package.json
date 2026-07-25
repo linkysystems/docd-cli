@@ -1,7 +1,7 @@
 {
   "name": "@linkysystems/docd",
   "version": "1.0.0",
-  "description": "CLI to install and update the Docs-First Development (DFD) pattern in any project.",
+  "description": "CLI to install and update the DOCD — DOCs-Driven Development methodology in any project.",
   "license": "MIT",
   "type": "module",
   "bin": {

@@ -17,6 +17,7 @@ export interface UpdateOptions {
   dryRun?: boolean;
   force?: boolean;
   yes?: boolean;
+  global?: boolean;
 }
 
 export async function runUpdate(options: UpdateOptions): Promise<void> {
@@ -26,6 +27,8 @@ export async function runUpdate(options: UpdateOptions): Promise<void> {
     console.log(pc.red("No .docd.json found. Run \"docd init\" first."));
     return;
   }
+
+  const globalInstall = options.global ?? config.config.global ?? false;
 
   const bundleVersion = await getPackageVersion();
   if (config.version === bundleVersion && !options.dryRun) {
@@ -47,7 +50,7 @@ export async function runUpdate(options: UpdateOptions): Promise<void> {
       continue;
     }
 
-    const paths = provider.getPaths(cwd);
+    const paths = provider.getPaths(cwd, globalInstall);
     await ensureBackupDir(paths.backupDir);
 
     for (const template of manifest.files) {
@@ -56,7 +59,7 @@ export async function runUpdate(options: UpdateOptions): Promise<void> {
         continue;
       }
 
-      const installedRelative = provider.resolveInstalledPath(template.relativePath);
+      const installedRelative = provider.resolveInstalledPath(template.relativePath, globalInstall);
       const installedAbsolute = resolve(cwd, installedRelative);
 
       if (!existsSync(installedAbsolute)) {

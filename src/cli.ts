@@ -18,8 +18,9 @@ export async function run(argv: string[]): Promise<void> {
       d: "dry-run",
       f: "force",
       y: "yes",
+      g: "global",
     },
-    boolean: ["help", "version", "dry-run", "force", "yes"],
+    boolean: ["help", "version", "dry-run", "force", "yes", "global"],
     string: ["ide"],
     default: {
       cwd: process.cwd(),
@@ -42,7 +43,7 @@ export async function run(argv: string[]): Promise<void> {
 
   switch (command) {
     case "init":
-      await runInit({ cwd, ide: args.ide });
+      await runInit({ cwd, ide: args.ide, global: args.global ?? false });
       break;
     case "status":
       await runStatus({ cwd });
@@ -53,6 +54,7 @@ export async function run(argv: string[]): Promise<void> {
         dryRun: args["dry-run"] ?? false,
         force: args.force ?? false,
         yes: args.yes ?? false,
+        global: args.global === true ? true : undefined,
       });
       break;
     default:
@@ -69,6 +71,7 @@ ${pc.bold("docd")} — install and update the Docs-First Development (DFD) patte
 Usage:
   docd init --ide kilo
   docd init --ide kilo,cursor
+  docd init --global
   docd status
   docd update
   docd update --dry-run
@@ -77,6 +80,8 @@ Usage:
 
 Options:
   --ide         Comma-separated IDE providers (default: kilo)
+  --global      Install/update agents and skills in the global IDE config
+                (e.g. ~/.config/kilo); .docd.json stays local
   --dry-run     Show changes without applying
   --yes         Apply all updates without prompting
   --force       Overwrite local changes without prompting

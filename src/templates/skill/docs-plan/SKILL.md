@@ -1,6 +1,6 @@
 ---
 name: docs-plan
-version: 1.0.0
+version: 1.1.0
 description: Create, edit, refine, and explore change plans collaboratively with the user, grounding decisions in existing code, docs, and external references.
 ---
 
@@ -20,7 +20,7 @@ The user provides one of the following:
 
 ### 1. Load configuration
 
-Read `.kilo/docs-manager.yaml` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, `changeFilenamePattern`, `defaultStatus`, and `allowedStatuses`.
+Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, `changeFilenamePattern`, `defaultStatus`, and `allowedStatuses`.
 
 ### 2. Identify the target feature and change
 
@@ -96,7 +96,7 @@ Ask the user: **"Aprove this plan as-is, request changes, explore alternatives, 
 ## Guardrails
 
 - Do not overwrite existing files unless the user explicitly asks to edit an existing plan.
-- Always use the configured paths from `.kilo/docs-manager.yaml`.
+- Always use the configured paths from `config.docs` in `.docd.json`.
 - Always ask for or confirm the feature name when creating a plan for a non-existing feature.
 - Do not proceed to implementation without explicit user approval of the plan.
 - If the user requests refinements, update the same plan file and re-present the summary.

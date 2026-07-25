@@ -1,6 +1,6 @@
 ---
 name: docs-generate-from-code
-version: 1.0.0
+version: 1.1.0
 description: Generate feature documentation from an existing codebase directory or feature path.
 ---
 
@@ -19,7 +19,7 @@ If the input is ambiguous, ask the user to confirm the target feature name and d
 
 1. **Load configuration**
 
-   Read `.kilo/docs-manager.yaml` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, `changeFilenamePattern`, `defaultStatus`, and `allowedStatuses`.
+   Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, `changeFilenamePattern`, `defaultStatus`, and `allowedStatuses`.
 
 2. **Identify the target**
 
@@ -79,5 +79,5 @@ If the input is ambiguous, ask the user to confirm the target feature name and d
 - Do not generate implementation plans or change plans; this skill only creates feature documentation.
 - Be explicit about assumptions; do not invent behaviors that are not supported by the code.
 - If the codebase is too large to analyze exhaustively, focus on the entry points and public APIs, and note what was skipped.
-- Always use the configured paths from `.kilo/docs-manager.yaml`.
+- Always use the configured paths from `config.docs` in `.docd.json`.
 - If the target directory is outside the workspace or in an ignored directory, stop and ask the user.

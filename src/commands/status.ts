@@ -30,6 +30,7 @@ export async function runStatus(options: StatusOptions): Promise<void> {
 
   const ides = parseIdeArgs(config.config.ides);
   const manifest = await loadManifest(getTemplatesDir());
+  const globalInstall = config.config.global ?? false;
 
   for (const ide of ides) {
     const provider = findProvider(ide);
@@ -38,12 +39,12 @@ export async function runStatus(options: StatusOptions): Promise<void> {
       continue;
     }
 
-    console.log(pc.bold(`Provider: ${provider.name}`));
+    console.log(pc.bold(`Provider: ${provider.name}${globalInstall ? " (global)" : ""}`));
     const outdated: string[] = [];
     const modified: string[] = [];
 
     for (const template of manifest.files) {
-      const installedRelative = provider.resolveInstalledPath(template.relativePath);
+      const installedRelative = provider.resolveInstalledPath(template.relativePath, globalInstall);
       const installedAbsolute = resolve(cwd, installedRelative);
 
       if (!existsSync(installedAbsolute)) {

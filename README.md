@@ -1,6 +1,6 @@
 # `@linkysystems/docd` CLI
 
-CLI to install and update the Docs-First Development (DFD) pattern in any project.
+CLI to install and update **DOCD — DOCs-Driven Development**, a docs-first development methodology, in any project.
 
 ## Requirements
 
@@ -15,8 +15,12 @@ npm install -g @linkysystems/docd
 ## Usage
 
 ```bash
-# Initialize DFD in the current project
+# Initialize DOCD in the current project
 npx docd init --ide kilo
+
+# Install agents/skills globally (e.g. ~/.config/kilo) instead of in the project;
+# .docd.json stays local
+npx docd init --ide kilo --global
 
 # Install for multiple IDEs at once
 npx docd init --ide kilo,cursor
@@ -24,7 +28,7 @@ npx docd init --ide kilo,cursor
 # Check installed vs available versions
 npx docd status
 
-# Update all DFD files
+# Update all DOCD files (uses the global setting recorded in .docd.json)
 npx docd update
 
 # Preview changes without applying them
@@ -39,7 +43,7 @@ px docd update --force
 
 ## What it installs
 
-- `.docd.json` — local configuration and bundle version.
+- `.docd.json` — local configuration (including the docs layout under `config.docs`) and bundle version.
 - `docs/` — empty directory for feature documentation.
 - Provider-specific files (for `kilo`):
   - `.kilo/agent/docs-manager.md`
@@ -47,7 +51,6 @@ px docd update --force
   - `.kilo/skills/docs-implement/SKILL.md`
   - `.kilo/skills/docs-sync/SKILL.md`
   - `.kilo/skills/docs-generate-from-code/SKILL.md`
-  - `.kilo/docs-manager.yaml`
 
 Role-based agents are **not** included in this package.
 

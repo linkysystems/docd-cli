@@ -11,21 +11,24 @@ import type { Provider } from "../providers/base.js";
 export interface InitOptions {
   ide: string | string[] | undefined;
   cwd: string;
+  global?: boolean;
 }
 
 export async function runInit(options: InitOptions): Promise<void> {
   const cwd = options.cwd;
+  const globalInstall = options.global ?? false;
   const ides = parseIdeArgs(options.ide);
   const bundleVersion = await getPackageVersion();
 
-  const config = defaultConfig(bundleVersion, ides);
+  const config = defaultConfig(bundleVersion, ides, globalInstall);
   for (const ide of ides) {
     const provider = findProvider(ide);
     if (!provider) {
       console.error(pc.red(`Provider "${ide}" not found.`));
       continue;
     }
-    config.config[provider.configKey] = provider.configDir;
+    config.config[provider.configKey] =
+      globalInstall && provider.globalConfigDir ? provider.globalConfigDir : provider.configDir;
   }
 
   const configPath = resolve(cwd, ".docd.json");
@@ -37,8 +40,8 @@ export async function runInit(options: InitOptions): Promise<void> {
   await writeConfig(cwd, config);
   console.log(pc.green(`Created .docd.json (bundle ${bundleVersion})`));
 
-  await mkdir(resolve(cwd, config.config.docsDir), { recursive: true });
-  console.log(pc.green(`Created ${config.config.docsDir}/`));
+  await mkdir(resolve(cwd, config.config.docs.root), { recursive: true });
+  console.log(pc.green(`Created ${config.config.docs.root}/`));
 
   const manifest = await loadManifest(getTemplatesDir());
 
@@ -46,13 +49,13 @@ export async function runInit(options: InitOptions): Promise<void> {
     const provider = findProvider(ide);
     if (!provider) continue;
 
-    const paths = provider.getPaths(cwd);
+    const paths = provider.getPaths(cwd, globalInstall);
     await mkdir(paths.configDir, { recursive: true });
     await mkdir(paths.agentDir, { recursive: true });
     await mkdir(paths.skillDir, { recursive: true });
 
     for (const template of manifest.files) {
-      const installedRelative = provider.resolveInstalledPath(template.relativePath);
+      const installedRelative = provider.resolveInstalledPath(template.relativePath, globalInstall);
       const installedAbsolute = resolve(cwd, installedRelative);
 
       if (existsSync(installedAbsolute)) {
