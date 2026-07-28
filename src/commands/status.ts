@@ -7,6 +7,8 @@ import { getPackageVersion, getTemplatesDir } from "../paths.js";
 import { loadManifest, parseFrontmatter } from "../manifest.js";
 import { findProvider, parseIdeArgs } from "../providers/index.js";
 import { hasMeaningfulDiff } from "../diff.js";
+import { findLegacyFiles } from "../migrate.js";
+import type { Provider } from "../providers/base.js";
 
 export interface StatusOptions {
   cwd: string;
@@ -32,14 +34,36 @@ export async function runStatus(options: StatusOptions): Promise<void> {
   const manifest = await loadManifest(getTemplatesDir());
   const globalInstall = config.config.global ?? false;
 
+  const groups = new Map<string, { names: string[]; provider: Provider }>();
   for (const ide of ides) {
     const provider = findProvider(ide);
     if (!provider) {
       console.log(pc.red(`Unknown provider "${ide}"`));
       continue;
     }
+    const dir = provider.getPaths(cwd, globalInstall).configDir;
+    const group = groups.get(dir);
+    if (group) {
+      group.names.push(provider.name);
+    } else {
+      groups.set(dir, { names: [provider.name], provider });
+    }
+  }
 
-    console.log(pc.bold(`Provider: ${provider.name}${globalInstall ? " (global)" : ""}`));
+  for (const { names, provider } of groups.values()) {
+    console.log(pc.bold(`Provider: ${names.join(", ")}${globalInstall ? " (global)" : ""}`));
+
+    const recordedDir = config.config[provider.configKey];
+    if (!globalInstall && typeof recordedDir === "string" && recordedDir !== provider.configDir) {
+      const legacyFiles = findLegacyFiles(provider, cwd, manifest);
+      if (legacyFiles.length > 0) {
+        console.log(
+          pc.yellow(
+            `  legacy layout detected in ${recordedDir} (${legacyFiles.length} file(s)); run "docd update" to migrate`,
+          ),
+        );
+      }
+    }
     const outdated: string[] = [];
     const modified: string[] = [];
 

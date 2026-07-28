@@ -1,6 +1,6 @@
 ---
 name: docs-plan
-version: 1.2.0
+version: 1.3.0
 description: Create, edit, refine, and explore change plans collaboratively with the user, grounding decisions in existing code, docs, and external references.
 ---
 
@@ -20,7 +20,7 @@ The user provides one of the following:
 
 ### 1. Load configuration
 
-Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, `changeFilenamePattern`, `defaultStatus`, and `allowedStatuses`. A `null` value for `specFile`, `guideFile`, `dataModelsFile`, or `uiFile` means the file is disabled: never create, read, update, or link to it.
+Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `guideFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, `changeFilenamePattern`, `defaultStatus`, and `allowedStatuses`. A `null` value for `specFile`, `guideFile`, or `uiFile` means the file is disabled: never create, read, update, or link to it.
 
 ### 2. Identify the target feature and change
 
@@ -33,7 +33,7 @@ Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `gu
 
 Before writing or editing, collect relevant information:
 
-- **Existing feature docs**: Read `docs/<feature-id>/<guideFile>`, `docs/<feature-id>/<specFile>`, `docs/<feature-id>/<dataModelsFile>`, `docs/<feature-id>/<uiFile>`, and `docs/<feature-id>/<changelogFile>` if they are configured (not `null`) and exist.
+- **Existing feature docs**: Read `docs/<feature-id>/<guideFile>`, `docs/<feature-id>/<specFile>`, `docs/<feature-id>/<uiFile>`, and `docs/<feature-id>/<changelogFile>` if they are configured (not `null`) and exist.
 - **Existing plans**: Read the current plan file if editing or refining. Scan related plans in the same `changesDir/`.
 - **Current code**: Use `grep`, `semantic_search`, and `read` to inspect relevant code paths when the user mentions concrete areas (e.g., `server/api`, `client/dashboard`). Summarize findings only; do not modify code.
 - **External references**: Use `webfetch` when the user asks for industry patterns, library documentation, or competitive references that can inform the plan.
@@ -46,7 +46,6 @@ When creating a new feature or subfeature, generate the following files with con
 
 - `docs/<feature-id>/<guideFile>` (e.g., `guide.md`): description, how to use, goals, links.
 - `docs/<feature-id>/<specFile>` (e.g., `spec.md`): technical vision, architecture, API contracts, flows, design decisions.
-- `docs/<feature-id>/<dataModelsFile>` (e.g., `data-models.md`, optional): model index with file paths, relationships, and business invariants (never field-level copies of code).
 - `docs/<feature-id>/<uiFile>` (e.g., `ui.md`, optional): visual details, colors, formats, typography, and URL to an external design system (e.g., Figma).
 - `docs/<feature-id>/<changelogFile>` (e.g., `changelog.md`): empty table with columns Date, Change, Description, Responsible.
 - `docs/<feature-id>/<changesDir>/` directory.

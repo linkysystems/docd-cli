@@ -1,6 +1,6 @@
 {
   "name": "@linkysystems/docd",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "CLI to install and update the DOCD — DOCs-Driven Development methodology in any project.",
   "license": "MIT",
   "type": "module",
@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc && rm -rf dist/templates && cp -r src/templates dist/templates",
     "dev": "tsx src/index.ts",
-    "test": "tsx --test tests/**/*.test.ts",
+    "test": "tsx --test tests/*.test.ts",
+    "test:types": "tsc -p tsconfig.test.json",
     "prepublishOnly": "npm run build"
   },
   "files": [

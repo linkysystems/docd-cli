@@ -1,24 +1,7 @@
-import { homedir } from "node:os";
-import { resolve } from "node:path";
-import { Provider, ProviderPaths, getInstalledPath } from "./base.js";
+import { AgentsProvider } from "./agents.js";
 
-export class KiloProvider implements Provider {
+export class KiloProvider extends AgentsProvider {
   name = "kilo";
   configKey = "kiloConfigDir";
-  configDir = ".kilo";
-  globalConfigDir = resolve(homedir(), ".config", "kilo");
-
-  getPaths(cwd: string, globalInstall = false): ProviderPaths {
-    const base = globalInstall ? this.globalConfigDir : `${cwd}/${this.configDir}`;
-    return {
-      configDir: base,
-      agentDir: `${base}/agent`,
-      skillDir: `${base}/skills`,
-      backupDir: `${base}/.docd-backups`,
-    };
-  }
-
-  resolveInstalledPath(templateRelativePath: string, globalInstall = false): string {
-    return getInstalledPath(this, templateRelativePath, globalInstall);
-  }
+  legacy = { configDir: ".kilo", agentDirName: "agent", skillDirName: "skills" };
 }

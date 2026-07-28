@@ -6,7 +6,6 @@ export interface DocsManagerConfig {
   root: string;
   specFile: string | null;
   guideFile: string | null;
-  dataModelsFile: string | null;
   uiFile: string | null;
   changelogFile: string;
   changesDir: string;
@@ -30,7 +29,6 @@ export const DEFAULT_DOCS_CONFIG: DocsManagerConfig = {
   root: "docs",
   specFile: "spec.md",
   guideFile: "guide.md",
-  dataModelsFile: "data-models.md",
   uiFile: "ui.md",
   changelogFile: "changelog.md",
   changesDir: "changes",

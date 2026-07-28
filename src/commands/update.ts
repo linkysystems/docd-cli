@@ -9,6 +9,7 @@ import { loadManifest, parseFrontmatter, serializeFrontmatter } from "../manifes
 import { findProvider, parseIdeArgs } from "../providers/index.js";
 import { computeDiff, hasMeaningfulDiff } from "../diff.js";
 import { backupFile, ensureBackupDir } from "../backup.js";
+import { findLegacyFiles, migrateLegacyLayout } from "../migrate.js";
 import type { Provider } from "../providers/base.js";
 import type { TemplateFile } from "../manifest.js";
 
@@ -42,6 +43,8 @@ export async function runUpdate(options: UpdateOptions): Promise<void> {
   let updatedCount = 0;
   let skippedCount = 0;
   let abortAll = false;
+  let configChanged = false;
+  const processedDirs = new Map<string, string>();
 
   for (const ide of ides) {
     const provider = findProvider(ide);
@@ -51,6 +54,28 @@ export async function runUpdate(options: UpdateOptions): Promise<void> {
     }
 
     const paths = provider.getPaths(cwd, globalInstall);
+    const alreadyProcessed = processedDirs.get(paths.configDir);
+    if (alreadyProcessed) {
+      console.log(
+        pc.dim(`provider "${ide}" shares ${paths.configDir} with "${alreadyProcessed}"; skipping duplicate pass`),
+      );
+      continue;
+    }
+    processedDirs.set(paths.configDir, provider.name);
+
+    const recordedDir = config.config[provider.configKey];
+    if (!globalInstall && typeof recordedDir === "string" && recordedDir !== provider.configDir) {
+      const legacyFiles = findLegacyFiles(provider, cwd, manifest);
+      if (legacyFiles.length > 0) {
+        console.log(pc.cyan(`Migrating ${legacyFiles.length} file(s) from legacy layout ${recordedDir}:`));
+        updatedCount += await migrateLegacyLayout(provider, cwd, manifest, options.dryRun ?? false);
+      }
+      if (!options.dryRun) {
+        config.config[provider.configKey] = provider.configDir;
+        configChanged = true;
+      }
+    }
+
     await ensureBackupDir(paths.backupDir);
 
     for (const template of manifest.files) {
@@ -144,10 +169,14 @@ export async function runUpdate(options: UpdateOptions): Promise<void> {
     }
   }
 
-  if (!options.dryRun && updatedCount > 0) {
-    config.version = bundleVersion;
+  if (!options.dryRun && (updatedCount > 0 || configChanged)) {
+    if (updatedCount > 0) {
+      config.version = bundleVersion;
+    }
     await writeConfig(cwd, config);
-    console.log(pc.green(`\nUpdated .docd.json version to ${bundleVersion}.`));
+    if (updatedCount > 0) {
+      console.log(pc.green(`\nUpdated .docd.json version to ${bundleVersion}.`));
+    }
   }
 
   console.log();

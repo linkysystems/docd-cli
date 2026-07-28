@@ -1,7 +1,8 @@
 import { KiloProvider } from "./kilo.js";
+import { KimiProvider } from "./kimi.js";
 import type { Provider } from "./base.js";
 
-const providers = [new KiloProvider()];
+const providers = [new KiloProvider(), new KimiProvider()];
 
 export function listProviders(): Provider[] {
   return providers;

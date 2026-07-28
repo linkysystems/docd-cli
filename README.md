@@ -18,12 +18,12 @@ npm install -g @linkysystems/docd
 # Initialize DOCD in the current project
 npx docd init --ide kilo
 
-# Install agents/skills globally (e.g. ~/.config/kilo) instead of in the project;
+# Install agents/skills globally (~/.agents) instead of in the project;
 # .docd.json stays local
 npx docd init --ide kilo --global
 
-# Install for multiple IDEs at once
-npx docd init --ide kilo,cursor
+# Install for multiple IDEs at once (kilo and kimi share the .agents layout)
+npx docd init --ide kilo,kimi
 
 # Check installed vs available versions
 npx docd status
@@ -41,21 +41,21 @@ npx docd update --dry-run
 npx docd update --yes
 
 # Overwrite local changes without prompting (backups still created)
-px docd update --force
+npx docd update --force
 ```
 
 ## What it installs
 
 - `.docd.json` — local configuration (including the docs layout under `config.docs`) and bundle version.
-  - `config.docs.specFile`, `guideFile`, `dataModelsFile`, and `uiFile` are optional:
-    set any of them to `null` to disable that file (e.g. projects without UI or data models).
+  - `config.docs.specFile`, `guideFile`, and `uiFile` are optional:
+    set any of them to `null` to disable that file (e.g. projects without UI).
 - `docs/` — empty directory for feature documentation.
-- Provider-specific files (for `kilo`):
-  - `.kilo/agent/docs-manager.md`
-  - `.kilo/skills/docs-plan/SKILL.md`
-  - `.kilo/skills/docs-implement/SKILL.md`
-  - `.kilo/skills/docs-sync/SKILL.md`
-  - `.kilo/skills/docs-generate-from-code/SKILL.md`
+- Provider-specific files (for `kilo` and `kimi`, both under the shared `.agents/` convention):
+  - `.agents/agents/docs-manager.md`
+  - `.agents/skills/docs-plan/SKILL.md`
+  - `.agents/skills/docs-implement/SKILL.md`
+  - `.agents/skills/docs-sync/SKILL.md`
+  - `.agents/skills/docs-generate-from-code/SKILL.md`
 
 Role-based agents are **not** included in this package.
 
@@ -66,6 +66,10 @@ npm install
 npm run build
 npm run dev -- init --ide kilo
 ```
+
+This repo dogfoods DOCD: the files under `.agents/` are installed copies of `src/templates/`.
+After editing any template, run `npm run dev -- update --yes` to refresh them —
+`tests/dogfood.test.ts` fails if they drift.
 
 The project is built with TypeScript and ESM. The entry binary is `dist/index.js` with a Node shebang.
 
