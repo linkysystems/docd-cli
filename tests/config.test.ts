@@ -33,7 +33,6 @@ describe("config", () => {
       const config = defaultConfig("1.0.0", ["kilo"]);
       const docs: DocsManagerConfig = {
         ...config.config.docs,
-        dataModelsFile: null,
         uiFile: null,
       };
       config.config.docs = docs;
@@ -41,10 +40,18 @@ describe("config", () => {
 
       const loaded = await readConfig(dir);
       assert.ok(loaded);
-      assert.equal(loaded.config.docs.dataModelsFile, null);
       assert.equal(loaded.config.docs.uiFile, null);
       assert.equal(loaded.config.docs.guideFile, "guide.md");
       assert.equal(loaded.config.docs.specFile, "spec.md");
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("readConfig returns null when no .docd.json exists", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "docd-config-empty-"));
+    try {
+      assert.equal(await readConfig(dir), null);
     } finally {
       await rm(dir, { recursive: true, force: true });
     }

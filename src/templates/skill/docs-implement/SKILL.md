@@ -1,6 +1,6 @@
 ---
 name: docs-implement
-version: 1.2.0
+version: 1.3.0
 description: Implement tasks from an approved change plan using subagents or Agent Manager for parallel execution.
 ---
 
@@ -16,7 +16,7 @@ Implement the tasks defined in an approved change plan located in `docs/<feature
 
 1. **Load configuration**
 
-   Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `guideFile`, `dataModelsFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, and `allowedStatuses`. A `null` value for `specFile`, `guideFile`, `dataModelsFile`, or `uiFile` means the file is disabled: never create, read, update, or link to it.
+   Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `guideFile`, `uiFile`, `changelogFile`, `changesDir`, `archiveDir`, and `allowedStatuses`. A `null` value for `specFile`, `guideFile`, or `uiFile` means the file is disabled: never create, read, update, or link to it.
 
 2. **Read the plan**
 
@@ -44,7 +44,7 @@ Implement the tasks defined in an approved change plan located in `docs/<feature
      - `devops` for infrastructure or CI/CD changes.
    - When delegating, pass:
      - The exact task description.
-     - Relevant sections from the plan, spec, and data-models (whichever are enabled).
+     - Relevant sections from the plan, spec, and ui docs (whichever are enabled).
      - The affected area and file paths if known.
      - A clear instruction to mark the task as complete in the plan file after finishing.
 

@@ -5,11 +5,20 @@ export interface ProviderPaths {
   backupDir: string;
 }
 
+export interface ProviderLegacyDirs {
+  configDir: string;
+  agentDirName: string;
+  skillDirName: string;
+}
+
 export interface Provider {
   name: string;
   configKey: string;
   configDir: string;
+  agentDirName: string;
+  skillDirName: string;
   globalConfigDir?: string;
+  legacy?: ProviderLegacyDirs;
   getPaths(cwd: string, globalInstall?: boolean): ProviderPaths;
   resolveInstalledPath(templateRelativePath: string, globalInstall?: boolean): string;
   transformTemplate?(content: string): string;
@@ -29,11 +38,11 @@ export function getInstalledPath(
     globalInstall && provider.globalConfigDir ? provider.globalConfigDir : provider.configDir;
 
   if (kind === "agent") {
-    return [base, "agent", ...parts.slice(1)].join("/");
+    return [base, provider.agentDirName, ...parts.slice(1)].join("/");
   }
 
   if (kind === "skill") {
-    return [base, "skills", ...parts.slice(1)].join("/");
+    return [base, provider.skillDirName, ...parts.slice(1)].join("/");
   }
 
   return [provider.configDir, ...parts].join("/");

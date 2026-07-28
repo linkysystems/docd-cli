@@ -74,7 +74,7 @@ ${pc.bold("docd")} — install and update DOCD (DOCs-Driven Development) in any 
 
 Usage:
   docd init --ide kilo
-  docd init --ide kilo,cursor
+  docd init --ide kilo,kimi
   docd init --global
   docd status
   docd changes
@@ -84,9 +84,9 @@ Usage:
   docd update --force
 
 Options:
-  --ide         Comma-separated IDE providers (default: kilo)
-  --global      Install/update agents and skills in the global IDE config
-                (e.g. ~/.config/kilo); .docd.json stays local
+  --ide         Comma-separated IDE providers: kilo, kimi (default: kilo)
+  --global      Install/update agents and skills in the global shared config
+                (~/.agents); .docd.json stays local
   --dry-run     Show changes without applying
   --yes         Apply all updates without prompting
   --force       Overwrite local changes without prompting
