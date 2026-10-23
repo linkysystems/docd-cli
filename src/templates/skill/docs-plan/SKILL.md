@@ -1,6 +1,6 @@
 ---
 name: docs-plan
-version: 1.3.0
+version: 1.4.0
 description: Create, edit, refine, and explore change plans collaboratively with the user, grounding decisions in existing code, docs, and external references.
 ---
 
@@ -26,6 +26,7 @@ Read the `config.docs` object in `.docd.json` to resolve `root`, `specFile`, `gu
 
 - If the user provided a feature ID, use it.
 - If the user provided a change ID, locate the existing plan file.
+- The feature ID is the full path relative to the docs `root`, including all parent segments for nested features (e.g., `docs/social-media/posts/` → feature ID `social-media/posts`). Never shorten it to the last segment or drop parent segments.
 - If neither is provided, infer a feature name from the change description and ask the user to confirm or correct it. Example: "UI mobile de produtos para clientes" → feature `products-store` or `produtos`.
 - If the feature directory does not exist, create it.
 
@@ -77,7 +78,7 @@ Show a concise summary including:
 
 Ask the user: **"Aprove this plan as-is, request changes, explore alternatives, or cancel?"**
 
-- If the user **approves explicitly** (e.g., "aprovar", "approved", "ok", "proceed"), save the plan as-is and recommend executing it in a **new conversation or session** using `/docs-implement <feature-id>/<change-id>` to keep context isolated.
+- If the user **approves explicitly** (e.g., "aprovar", "approved", "ok", "proceed"), save the plan as-is and let the user know the plan can be implemented either **right here** by running `/docs-implement <feature-id>/<change-id>` now, or in a **new conversation or session** with the same command if they prefer to keep the context isolated.
 - If the user requests changes, ask what to adjust (scope, tasks, priority, affected areas, technical approach, etc.). Update the plan file accordingly and present the revised version. Repeat this step until explicit approval.
 - If the user wants to explore alternatives, present 2–3 concise options with trade-offs, grounded in the gathered context. After the user chooses, update the plan and continue refining.
 - If the user cancels, remove the draft plan file (and the feature directory if it was created just for this plan and is empty) and stop.
@@ -85,12 +86,12 @@ Ask the user: **"Aprove this plan as-is, request changes, explore alternatives, 
 ### 8. After approval
 
 - Mark the plan status as `pending` (ready for development) and update `updated_at`.
-- Output a clear message: "Plan approved and saved at <path>. To keep the current context clean, start implementing this plan in a new conversation or session using `/docs-implement <feature-id>/<change-id>`."
+- Output a clear message: "Plan approved and saved at <path>. Implement it now by running `/docs-implement <feature-id>/<change-id>` here, or in a new conversation/session with the same command if you prefer to keep the context isolated."
 
 ## Output
 
 - Path of the approved or updated plan file.
-- Recommendation to continue implementation in a new conversation/session using `/docs-implement <feature-id>/<change-id>`.
+- The command `/docs-implement <feature-id>/<change-id>`, noting it can be run right here or in a new conversation/session.
 
 ## Guardrails
 
