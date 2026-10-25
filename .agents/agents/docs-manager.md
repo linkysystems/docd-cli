@@ -1,6 +1,6 @@
 ---
 name: docs-manager
-version: 1.3.0
+version: 1.4.0
 description: Specialized agent for managing feature documentation and change plans in the docs/ directory.
 mode: primary
 ---
@@ -222,4 +222,5 @@ Do **not** use a subfeature for:
 - To `docs-generate-from-code` when generating feature documentation from an existing codebase directory.
 - To `docs-implement` when implementing tasks from an approved change plan.
 - To `docs-sync` when summarizing implemented changes, updating the changelog, and refreshing feature docs.
-- To specialized role-based agents (`programador-senior`, `arquiteto`, `designer`, `devops`) or Agent Manager when `docs-implement` detects affected areas outside documentation. Prefer parallel execution when tasks are independent.
+- To specialized role-based agents (`senior-developer`, `architect`, `designer`, `devops`, `qa-tester`, `data-engineer`, `tech-writer`) or Agent Manager when `docs-implement` detects affected areas outside documentation. Prefer parallel execution when tasks are independent.
+- Role routing is data-driven: read the installed registry `roles.json` (next to the agents directory — project `.agents/` or the global agents dir recorded in `.docd.json`) to decide which role handles a task. Review specialists (`review-backend`, `review-frontend`, `review-security`, `review-devops`, `review-tests`) are spawned only by `review-lead`; recommend `@review-lead` before PRs, never invoke them directly.

@@ -1,0 +1,146 @@
+{
+  "version": "1.0.0",
+  "description": "DOCD role routing registry. Consumed by docs-implement (and any orchestrator) to decide IF subagents are needed and WHICH specialized role handles each task. Deterministic rules first; LLM judgment only as tie-breaker.",
+  "selection": {
+    "defaultRole": "senior-developer",
+    "precedence": ["explicit", "affectedArea", "filePattern", "keyword"],
+    "scores": { "explicit": 10, "affectedArea": 3, "filePattern": 2, "keyword": 1 },
+    "maxKeywordScore": 3,
+    "minTasksForSubagents": 2,
+    "minTasksForAlwaysDelegate": 5,
+    "maxParallel": 4
+  },
+  "roles": [
+    {
+      "name": "architect",
+      "kind": "design",
+      "routedBy": "docs-implement",
+      "priority": 10,
+      "affectedAreas": ["architecture", "api", "data-models", "integrations", "contracts"],
+      "filePatterns": ["**/contracts/**", "**/openapi*", "**/*.schema.*", "**/proto/**"],
+      "keywords": ["architecture", "api design", "api contract", "contract", "schema design", "trade-off", "tradeoff", "integration", "boundary", "microservice", "service boundary", "event-driven", "message broker", "queue", "tech stack"],
+      "scopeNote": "Design decisions and contracts only; delegates implementation to senior-developer."
+    },
+    {
+      "name": "designer",
+      "kind": "design",
+      "routedBy": "docs-implement",
+      "priority": 20,
+      "affectedAreas": ["ui", "ux", "frontend", "design-system", "accessibility"],
+      "filePatterns": ["**/*.css", "**/*.scss", "**/*.less", "**/components/**", "**/pages/**", "**/views/**", "**/layouts/**", "**/tailwind*", "**/*.story.*"],
+      "keywords": ["ui", "ux", "layout", "css", "style", "design system", "component", "accessibility", "a11y", "figma", "screen", "responsive", "typography", "color palette", "animation", "wireframe", "mockup"],
+      "scopeNote": "UI/UX decisions, components and styling; never touches business logic, APIs or schemas; collaborates with senior-developer to implement."
+    },
+    {
+      "name": "devops",
+      "kind": "infra",
+      "routedBy": "docs-implement",
+      "priority": 20,
+      "affectedAreas": ["infrastructure", "ci-cd", "deployment", "operations"],
+      "filePatterns": ["**/Dockerfile*", "**/docker-compose*", "**/.github/workflows/**", "**/.gitlab-ci*", "**/k8s/**", "**/kubernetes/**", "**/*.tf", "**/helm/**", "**/.env.example"],
+      "keywords": ["docker", "kubernetes", "k8s", "ci/cd", "pipeline", "deploy", "deployment", "terraform", "helm", "infrastructure", "infrastructure as code", "environment variable", "secrets management", "observability", "monitoring", "rollback", "release"],
+      "scopeNote": "Infrastructure, CI/CD, containers and deployment configs; never touches business code; coordinates with architect when infrastructure affects system design."
+    },
+    {
+      "name": "qa-tester",
+      "kind": "testing",
+      "routedBy": "docs-implement",
+      "priority": 20,
+      "affectedAreas": ["testing", "qa", "quality"],
+      "filePatterns": ["**/*.test.*", "**/*.spec.*", "**/tests/**", "**/test/**", "**/e2e/**", "**/__tests__/**", "**/cypress/**", "**/playwright*"],
+      "keywords": ["test", "tests", "unit test", "integration test", "e2e", "end-to-end", "coverage", "regression", "test suite", "flaky", "mock", "stub", "fixture", "tdd", "test case"],
+      "scopeNote": "Designs and writes tests, diagnoses failures, improves coverage; writes only test code and test fixtures."
+    },
+    {
+      "name": "data-engineer",
+      "kind": "data",
+      "routedBy": "docs-implement",
+      "priority": 20,
+      "affectedAreas": ["data", "database", "migrations", "data-models"],
+      "filePatterns": ["**/migrations/**", "**/*migration*", "**/models/**", "**/entities/**", "**/repositories/**", "**/*.sql", "**/prisma/**", "**/typeorm/**", "**/knex*"],
+      "keywords": ["migration", "migrations", "schema change", "sql", "table", "column", "index", "foreign key", "constraint", "orm", "entity", "repository", "query optimization", "n+1", "seed", "backfill", "data integrity", "transaction"],
+      "scopeNote": "Schemas, migrations, queries and data integrity; coordinates with architect on data model changes that cross service boundaries."
+    },
+    {
+      "name": "tech-writer",
+      "kind": "docs",
+      "routedBy": "docs-implement",
+      "priority": 20,
+      "affectedAreas": ["docs", "documentation"],
+      "filePatterns": ["**/docs/**", "**/*.md"],
+      "keywords": ["documentation", "readme", "changelog", "guide", "tutorial", "adr", "architecture decision record", "api docs", "docstring", "runbook", "onboarding doc"],
+      "scopeNote": "Technical documentation, ADRs and changelogs; integrates with the DOCD docs/ layout; never writes production code."
+    },
+    {
+      "name": "senior-developer",
+      "kind": "implementation",
+      "routedBy": "docs-implement",
+      "priority": 50,
+      "default": true,
+      "affectedAreas": ["backend", "core", "business-logic"],
+      "filePatterns": [],
+      "keywords": ["implement", "refactor", "bug", "fix", "feature", "function", "class", "service", "module", "logic", "endpoint implementation", "helper", "util"],
+      "scopeNote": "Default executor: implements, refactors and tests within any subproject, following local AGENTS.md conventions."
+    },
+    {
+      "name": "review-lead",
+      "kind": "review",
+      "routedBy": "user",
+      "priority": 5,
+      "affectedAreas": [],
+      "filePatterns": [],
+      "keywords": ["code review", "review my changes", "review before pr"],
+      "scopeNote": "Review coordinator: discovers scope, runs automated verification (may delegate to review-tests), fans out to the 4 domain specialists in parallel, synthesizes one report with a verdict."
+    },
+    {
+      "name": "review-backend",
+      "kind": "review",
+      "routedBy": "review-lead",
+      "priority": 30,
+      "affectedAreas": ["backend", "api", "business-logic"],
+      "filePatterns": ["**/api/**", "**/services/**", "**/*.controller.*", "**/*.service.*", "**/routes/**", "**/handlers/**"],
+      "keywords": [],
+      "scopeNote": "API design, queries, business logic, error handling, data invariants. Spawned only by review-lead."
+    },
+    {
+      "name": "review-frontend",
+      "kind": "review",
+      "routedBy": "review-lead",
+      "priority": 30,
+      "affectedAreas": ["frontend", "ui", "ux"],
+      "filePatterns": ["**/components/**", "**/pages/**", "**/*.tsx", "**/*.jsx", "**/*.vue", "**/*.svelte", "**/*.css"],
+      "keywords": [],
+      "scopeNote": "UI state, load/render/mutate flows, accessibility, frontend performance. Spawned only by review-lead."
+    },
+    {
+      "name": "review-security",
+      "kind": "review",
+      "routedBy": "review-lead",
+      "priority": 30,
+      "affectedAreas": ["security", "auth", "permissions"],
+      "filePatterns": ["**/auth/**", "**/middleware/**", "**/permissions/**", "**/policies/**"],
+      "keywords": [],
+      "scopeNote": "Authorization, injection, secrets, data exposure, fail-open checks, tenant isolation. Spawned only by review-lead (cross-cutting: also receives security-relevant files owned by other lenses)."
+    },
+    {
+      "name": "review-devops",
+      "kind": "review",
+      "routedBy": "review-lead",
+      "priority": 30,
+      "affectedAreas": ["infrastructure", "ci-cd", "deployment"],
+      "filePatterns": ["**/Dockerfile*", "**/docker-compose*", "**/.github/workflows/**", "**/.gitlab-ci*", "**/*.tf", "**/k8s/**"],
+      "keywords": [],
+      "scopeNote": "Containers, IaC, CI/CD pipelines, operational readiness. Spawned only by review-lead."
+    },
+    {
+      "name": "review-tests",
+      "kind": "review",
+      "routedBy": "review-lead",
+      "priority": 30,
+      "affectedAreas": ["testing", "qa"],
+      "filePatterns": ["**/*.test.*", "**/*.spec.*", "**/tests/**", "**/.github/workflows/**"],
+      "keywords": [],
+      "scopeNote": "Test/lint verification lens: discovers the right commands from the repo, runs them, diagnoses failures with evidence, proposes fixes (read-only; applies nothing without explicit user approval). Spawned only by review-lead (Step 2 verification) or directly for debugging."
+    }
+  ]
+}

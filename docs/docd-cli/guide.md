@@ -3,7 +3,7 @@ id: docd-cli
 title: docd CLI
 status: active
 created_at: 2026-07-25
-updated_at: 2026-07-27
+updated_at: 2026-10-23
 owner: albertosouza
 affected_areas:
   - src/cli.ts
@@ -48,8 +48,10 @@ During development (this repo), run via tsx: `npm run dev -- <command>`.
 - One-command bootstrap of the docs-driven workflow in any repository.
 - Keep installed agent/skill templates up to date with the published bundle, with backups and interactive diff review before overwriting local modifications.
 - Stay provider-agnostic: project config lives in `.docd.json`; only agents/skills are provider-specific.
+- Ship a complete specialized-agent workforce: 13 role agents plus the `roles.json` registry so `docs-implement` can detect whether subagents are needed and route each task deterministically.
 
 ## Notes
 
 - This documentation was backfilled from the code with `docs-generate-from-code`; see [spec.md](spec.md) for architecture details and [changelog.md](changelog.md) for the change history.
 - This very repository is initialized with DOCD (dogfooding): its `.docd.json` disables `uiFile` because a CLI has no UI.
+- Role agents are English-named (`architect`, `senior-developer`, …); legacy PT-BR globals (`arquiteto`, `programador-senior`) keep working but are no longer referenced by the bundle.

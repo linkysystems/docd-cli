@@ -51,13 +51,48 @@ npx docd update --force
     set any of them to `null` to disable that file (e.g. projects without UI).
 - `docs/` — empty directory for feature documentation.
 - Provider-specific files (for `kilo` and `kimi`, both under the shared `.agents/` convention):
-  - `.agents/agents/docs-manager.md`
+  - `.agents/roles.json` — role routing registry used to detect subagent needs (see below).
+  - `.agents/agents/docs-manager.md` — docs/ change-plan orchestrator (`mode: primary`).
+  - `.agents/agents/` — role-based agents:
+
+| Role | Kind | mode | Notes |
+|---|---|---|---|
+| `architect` | design | all | System/API/data-model design; delegates implementation to `senior-developer`. |
+| `senior-developer` | implementation | all | Default executor for implementation tasks. |
+| `designer` | design | all | UI/UX, design system, accessibility. |
+| `devops` | infra | all | Infrastructure, CI/CD, deploys, observability. |
+| `qa-tester` | testing | all | Test design/execution/coverage; writes only test code. |
+| `data-engineer` | data | all | Schemas, migrations, queries, data integrity. |
+| `tech-writer` | docs | all | Guides, specs, ADRs, changelogs (DOCD-aware). |
+| `review-lead` | review | all (read-only) | Review coordinator; fans out to the 4 domain lenses + `review-tests`. |
+| `review-backend` | review | subagent (hidden, read-only) | Spawned only by `review-lead`. |
+| `review-frontend` | review | subagent (hidden, read-only) | Spawned only by `review-lead`. |
+| `review-security` | review | subagent (hidden, read-only) | Spawned only by `review-lead`. |
+| `review-devops` | review | subagent (hidden, read-only) | Spawned only by `review-lead`. |
+| `review-tests` | review | subagent (hidden, read-only) | Verification lens; also debuggable via `@review-tests`. |
+
   - `.agents/skills/docs-plan/SKILL.md`
   - `.agents/skills/docs-implement/SKILL.md`
   - `.agents/skills/docs-sync/SKILL.md`
   - `.agents/skills/docs-generate-from-code/SKILL.md`
 
-Role-based agents are **not** included in this package.
+## Subagent detection & routing
+
+`docs-implement` does not guess when delegating. It reads `.agents/roles.json`, scores every
+unchecked plan task against each role using deterministic precedence — explicit `@role` mention →
+`affected_areas` match → file-pattern glob match → keyword hits — with `senior-developer` as the
+default role. It then decides **whether** subagents pay off (≥ 2 independent tasks, any specialist
+routed, or ≥ 5 tasks total; otherwise it executes directly to avoid over-orchestration) and prints
+an auditable routing table (`Task → Role → Match → parallel/sequential`) before spawning anything,
+bounded by `maxParallel`. Missing role agents degrade gracefully: the task runs directly under that
+role's `scopeNote` with a warning to run `npx docd update`.
+
+Customize routing for your project by editing `.agents/roles.json` (areas, patterns, keywords,
+thresholds); `docd update` shows a diff and asks before overwriting local changes.
+
+Migration note: role names changed from the legacy global PT-BR agents —
+`arquiteto` → `architect`, `programador-senior` → `senior-developer` (`designer` and `devops`
+kept their names). Bundled agents are project-level and shadow same-name globals.
 
 ## Development
 
